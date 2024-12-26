@@ -39,11 +39,11 @@ use crate::redactors::*;
 
 /// A Trait to define how a value should be redacted.
 pub trait Redactor {
-
     ///Function called by [Display] and [Debug].
-    fn redact(f: &mut Formatter<'_>) -> Result where Self: Sized;
+    fn redact(f: &mut Formatter<'_>) -> Result
+    where
+        Self: Sized;
 }
-
 
 /// Struct used to wrap sensitive content that should not be printed/logged.
 /// The redaction behaviour is defined by [Redactor].
@@ -68,7 +68,6 @@ pub struct Redacted<T, R: Redactor = Simple> {
 }
 
 impl<T, R: Redactor> Redacted<T, R> {
-
     ///Consumes the [Redacted], returning the wrapped value.
     ///```rust
     /// # use redact::Redacted;
@@ -85,7 +84,9 @@ impl<T, R: Redactor> Redacted<T, R> {
     /// let x: Redacted<_> = "something".into();
     /// assert_eq!(*x.inner(), "something");
     ///```
-    pub fn inner(&self) -> &T { &self.inner }
+    pub fn inner(&self) -> &T {
+        &self.inner
+    }
 
     ///Get a mutable reference to the wrapped type.
     ///```rust
@@ -95,9 +96,9 @@ impl<T, R: Redactor> Redacted<T, R> {
     ///
     /// assert_eq!(*x.inner(), "different");
     ///```
-    pub fn inner_mut(&mut self) -> &mut T { &mut self.inner }
-
-
+    pub fn inner_mut(&mut self) -> &mut T {
+        &mut self.inner
+    }
 }
 
 impl<T: Default, R: Redactor> Default for Redacted<T, R> {

@@ -1,4 +1,3 @@
-
 //! Contains ready to use [Redactor]s
 use crate::Redactor;
 use std::fmt::Formatter;
@@ -45,4 +44,3 @@ impl<const SYMBOL: char, const REP: usize> Redactor for Custom<SYMBOL, REP> {
         )
     }
 }
-
