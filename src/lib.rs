@@ -6,7 +6,7 @@
 //!
 //! In it's most basic form, [Redacted] is used like this:
 //! ```rust
-//! # use redact::Redacted;
+//! # use redactrs::Redacted;
 //! let x: Redacted<&str> = "sensitive".into();
 //!
 //! assert_eq!(x.to_string(), "<redacted>");
@@ -15,8 +15,8 @@
 //! This will by default use the [Simple]-Redactor. If desired, it can be swapped with the [Custom]-Redactor.
 //!
 //! ```rust
-//! # use redact::Redacted;
-//! # use redact::redactors::Custom;
+//! # use redactrs::Redacted;
+//! # use redactrs::redactors::Custom;
 //! let x: Redacted<&str, Custom<'X', 5>> = "sensitive".into();
 //!
 //! assert_eq!(x.to_string(), "XXXXX");
@@ -49,15 +49,15 @@ pub trait Redactor {
 /// The redaction behaviour is defined by [Redactor].
 ///
 /// ```rust
-/// # use redact::Redacted;
+/// # use redactrs::Redacted;
 /// let secret: Redacted<String> = "my_secret_string".to_string().into();
 ///
 /// assert_eq!(secret.to_string(), "<redacted>");
 /// ```
 ///
 /// ```rust
-/// # use redact::Redacted;
-/// # use redact::redactors::Custom;
+/// # use redactrs::Redacted;
+/// # use redactrs::redactors::Custom;
 /// let secret: Redacted<String, Custom> = "my_secret_string".to_string().into();
 ///
 /// assert_eq!(secret.to_string(), "●●●●●●●●");
@@ -70,7 +70,7 @@ pub struct Redacted<T, R: Redactor = Simple> {
 impl<T, R: Redactor> Redacted<T, R> {
     ///Consumes the [Redacted], returning the wrapped value.
     ///```rust
-    /// # use redact::Redacted;
+    /// # use redactrs::Redacted;
     /// let x: Redacted<_> = "something".into();
     /// assert_eq!(x.into_inner(), "something");
     /// ```
@@ -80,7 +80,7 @@ impl<T, R: Redactor> Redacted<T, R> {
 
     ///Get a reference to the wrapped type.
     ///```rust
-    /// # use redact::Redacted;
+    /// # use redactrs::Redacted;
     /// let x: Redacted<_> = "something".into();
     /// assert_eq!(*x.inner(), "something");
     ///```
@@ -90,7 +90,7 @@ impl<T, R: Redactor> Redacted<T, R> {
 
     ///Get a mutable reference to the wrapped type.
     ///```rust
-    /// # use redact::Redacted;
+    /// # use redactrs::Redacted;
     /// let mut x: Redacted<_> = "something".into();
     /// *x.inner_mut() = "different";
     ///

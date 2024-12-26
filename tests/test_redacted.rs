@@ -1,5 +1,5 @@
-use redact::redactors::{Custom, Simple};
-use redact::Redacted;
+use redactrs::redactors::{Custom, Simple};
+use redactrs::Redacted;
 
 #[test]
 fn simple() {

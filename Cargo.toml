@@ -1,5 +1,5 @@
 [package]
-name = "redact"
+name = "redactrs"
 version = "0.1.0"
 edition = "2021"
 description = "Wrapper to avoid accidentally leaking sensitive data during printing/logging"
