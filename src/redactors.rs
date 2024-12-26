@@ -4,8 +4,8 @@ use std::fmt::Formatter;
 
 /// [Redactor] that will redact the value to "\<redacted\>"
 /// ```rust
-/// # use redact::Redacted;
-/// # use redact::redactors::Simple;
+/// # use redactrs::Redacted;
+/// # use redactrs::redactors::Simple;
 /// let redacted_value: Redacted<_, Simple> = "secret".into();
 ///
 /// assert_eq!(redacted_value.to_string(), "<redacted>")
@@ -19,8 +19,8 @@ impl Redactor for Simple {
 
 /// Configurable [Redactor] that lets you specify the symbol and repetition."
 /// ```rust
-/// # use redact::Redacted;
-/// # use redact::redactors::Custom;
+/// # use redactrs::Redacted;
+/// # use redactrs::redactors::Custom;
 /// let redacted_value: Redacted<_, Custom<'🤨', 3>> = "secret".into();
 ///
 /// assert_eq!(redacted_value.to_string(), "🤨🤨🤨");
@@ -28,8 +28,8 @@ impl Redactor for Simple {
 ///
 /// The default values will result in a password style redaction: "●●●●●●●●"
 /// ```rust
-/// # use redact::Redacted;
-/// # use redact::redactors::Custom;
+/// # use redactrs::Redacted;
+/// # use redactrs::redactors::Custom;
 /// let redacted_value: Redacted<_, Custom> = "secret".into();
 ///
 /// assert_eq!(redacted_value.to_string(),"●●●●●●●●");
