@@ -6,6 +6,7 @@ description = "Wrapper to avoid accidentally leaking sensitive data during print
 repository = "https://github.com/jeremyschiemann/redactrs.git"
 readme = "README.md"
 license-file = "LICENSE"
+documentation = "https://docs.rs/redactrs"
 
 keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
 categories = ["development-tools", "value-formatting", "config"]

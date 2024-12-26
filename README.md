@@ -1,3 +1,6 @@
+[![Crates.io](https://img.shields.io/crates/v/redactrs.svg)](https://crates.io/crates/redactrs)
+[![Documentation](https://docs.rs/redactrs/badge.svg)](https://docs.rs/redactrs/)
+
 # Redactrs
 
 ## What is it?
