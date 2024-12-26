@@ -7,4 +7,7 @@ repository = "https://github.com/jeremyschiemann/redactrs.git"
 readme = "README.md"
 license-file = "LICENSE"
 
+keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
+categories = ["development-tools", "value-formatting", "config"]
+
 [dependencies]
