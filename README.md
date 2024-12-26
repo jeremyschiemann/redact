@@ -1,7 +1,7 @@
-# Redact
+# Redactrs
 
 ## What is it?
-Redact is a wrapper for sensitive data that you want to avoid being leaked by accidentally printing/logging/etc. them.
+Redactrs is a wrapper for sensitive data that you want to avoid being leaked by accidentally printing/logging/etc. them.
 
 How the data is redacted is defined by the `Redactor`. A `Redactor` is a struct that implements the `Redactor`-trait.
 
