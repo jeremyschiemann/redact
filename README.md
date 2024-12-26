@@ -1,5 +1,5 @@
-[![Crates.io](https://img.shields.io/crates/v/redactrs.svg)](https://crates.io/crates/redactrs)
-[![Documentation](https://docs.rs/redactrs/badge.svg)](https://docs.rs/redactrs/)
+[![Crates.io](https://img.shields.io/crates/v/redactrs)](https://crates.io/crates/redactrs)
+[![Documentation](https://img.shields.io/docsrs/redactrs)](https://docs.rs/redactrs/)
 
 # Redactrs
 
@@ -10,7 +10,7 @@ How the data is redacted is defined by the `Redactor`. A `Redactor` is a struct 
 
 ## Usage
 
-In it's most basic form, `Redacted` is used like this:
+In its most basic form, `Redacted` is used like this:
 ```rust
 use redact::Redacted;
 
