@@ -8,7 +8,14 @@ Redactrs is a wrapper for sensitive data that you want to avoid being leaked by 
 
 How the data is redacted is defined by the `Redactor`. A `Redactor` is a struct that implements the `Redactor`-trait.
 
+
 ## Usage
+
+First add this crate to your project:
+```
+cargo add redactrs
+```
+
 
 In its most basic form, `Redacted` is used like this:
 ```rust

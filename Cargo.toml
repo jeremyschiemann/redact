@@ -12,6 +12,17 @@ documentation = "https://docs.rs/redactrs"
 keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
 categories = ["development-tools", "value-formatting", "config"]
 
-exclude = [".github/*"]
+exclude = [".github/*", "Makefile"]
+
+[features]
+default = []
+serde = ["dep:serde"]
 
 [dependencies]
+serde =  { optional = true, version = "1.0.217" }
+
+[dev-dependencies]
+serde = { version = "1.0.217", features = ["derive"] }
+serde_derive = "1.0.217"
+serde_json = "1.0.134"
+

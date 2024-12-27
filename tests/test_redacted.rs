@@ -1,5 +1,6 @@
 use redactrs::redactors::{Custom, Simple};
 use redactrs::Redacted;
+use serde::Serialize;
 
 #[test]
 fn display() {
@@ -89,4 +90,39 @@ fn order_with_inner() {
     assert!(x >= y);
     assert!(!(x < y));
     assert!(!(x <= y));
+}
+
+#[test]
+fn serialize() {
+    use serde::Serialize;
+    #[derive(Serialize)]
+    struct MyData {
+        a: Redacted<i32>,
+        b: i32,
+    }
+
+    let data = MyData {
+        a: 42.into(),
+        b: 24,
+    };
+
+    let json = serde_json::to_string(&data).expect("Test case");
+
+    assert_eq!(json, r#"{"a":"<redacted>","b":24}"#);
+}
+
+#[test]
+fn deserialize() {
+    use serde::Deserialize;
+    #[derive(Deserialize)]
+    struct MyData {
+        a: Redacted<i32>,
+        b: i32,
+    }
+
+    let data: MyData = serde_json::from_str(r#"{"a":42,"b":24}"#).expect("Test case");
+
+    assert_eq!(data.a, 42);
+    assert_eq!(data.b, 24);
+    assert_eq!(data.a.to_string(), "<redacted>");
 }
