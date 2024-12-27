@@ -12,4 +12,6 @@ documentation = "https://docs.rs/redactrs"
 keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
 categories = ["development-tools", "value-formatting", "config"]
 
+exclude = [".github/*"]
+
 [dependencies]
