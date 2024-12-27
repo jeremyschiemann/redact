@@ -5,7 +5,8 @@ edition = "2021"
 description = "Wrapper to avoid accidentally leaking sensitive data during printing/logging"
 repository = "https://github.com/jeremyschiemann/redactrs.git"
 readme = "README.md"
-license-file = "LICENSE"
+license = "MIT"
+rust-version = "1.63.0"
 documentation = "https://docs.rs/redactrs"
 
 keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
