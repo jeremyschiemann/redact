@@ -28,15 +28,23 @@
 //! - `.inner_mut()` to get a mutable reference of the wrapped tyepe.
 //!
 //! NOTE: a [Redacted] is always constructed via the [From]/[Into] trait.
+//!
+//!
+//! # Feature flags
+//! - `serde`: Enables serde support. Be aware: [Redacted] types will serialize into their redacted representation!
+//!
+
 pub mod redactors;
 
 use crate::redactors::Simple;
+#[cfg(doc)]
+use crate::redactors::*;
+
+#[cfg(any(feature = "serde", doc))]
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::cmp::Ordering;
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::marker::PhantomData;
-
-#[cfg(doc)]
-use crate::redactors::*;
 
 /// A Trait to define how a value should be redacted.
 pub trait Redactor {
@@ -172,5 +180,28 @@ impl<T, R: Redactor> Display for Redacted<T, R> {
 impl<T, R: Redactor> Debug for Redacted<T, R> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         R::redact(f)
+    }
+}
+
+/// Requires feature `serde`
+#[cfg(any(feature = "serde", doc))]
+impl<T: Serialize, R: Redactor> Serialize for Redacted<T, R> {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&*self.to_string())
+    }
+}
+
+/// Requires feature `serde`
+#[cfg(any(feature = "serde", doc))]
+impl<'de, T: Deserialize<'de>, R: Redactor> Deserialize<'de> for Redacted<T, R> {
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value: T = Deserialize::deserialize(deserializer)?;
+        Ok(value.into())
     }
 }
