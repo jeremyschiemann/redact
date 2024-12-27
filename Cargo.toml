@@ -19,7 +19,7 @@ default = []
 serde = ["dep:serde"]
 
 [dependencies]
-serde =  { optional = true, version = "1.0.217" }
+serde =  { optional = true, version = "1.0.0" }
 
 [dev-dependencies]
 serde = { version = "1.0.217", features = ["derive"] }
