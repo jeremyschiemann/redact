@@ -47,9 +47,9 @@ use std::fmt::{Debug, Display, Formatter, Result};
 use std::marker::PhantomData;
 
 /// A Trait to define how a value should be redacted.
-pub trait Redactor {
+pub trait Redactor<T> {
     ///Function called by [Display] and [Debug].
-    fn redact(f: &mut Formatter<'_>) -> Result
+    fn redact(value: &T, f: &mut Formatter<'_>) -> Result
     where
         Self: Sized;
 }
@@ -71,12 +71,12 @@ pub trait Redactor {
 ///
 /// assert_eq!(secret.to_string(), "●●●●●●●●");
 /// ```
-pub struct Redacted<T, R: Redactor = Simple> {
+pub struct Redacted<T, R: Redactor<T> = Simple> {
     inner: T,
     _redactor: PhantomData<R>,
 }
 
-impl<T, R: Redactor> Redacted<T, R> {
+impl<T, R: Redactor<T>> Redacted<T, R> {
     ///Consumes the [Redacted], returning the wrapped value.
     ///```rust
     /// # use redactrs::Redacted;
@@ -110,7 +110,7 @@ impl<T, R: Redactor> Redacted<T, R> {
     }
 }
 
-impl<T: Default, R: Redactor> Default for Redacted<T, R> {
+impl<T: Default, R: Redactor<T>> Default for Redacted<T, R> {
     fn default() -> Self {
         Self {
             inner: Default::default(),
@@ -119,7 +119,7 @@ impl<T: Default, R: Redactor> Default for Redacted<T, R> {
     }
 }
 
-impl<T, R: Redactor> From<T> for Redacted<T, R> {
+impl<T, R: Redactor<T>> From<T> for Redacted<T, R> {
     fn from(value: T) -> Self {
         Redacted {
             inner: value,
@@ -128,7 +128,7 @@ impl<T, R: Redactor> From<T> for Redacted<T, R> {
     }
 }
 
-impl<T: Clone, R: Redactor> Clone for Redacted<T, R> {
+impl<T: Clone, R: Redactor<T>> Clone for Redacted<T, R> {
     fn clone(&self) -> Self {
         Redacted {
             inner: self.inner.clone(),
@@ -137,55 +137,55 @@ impl<T: Clone, R: Redactor> Clone for Redacted<T, R> {
     }
 }
 
-impl<T: Copy, R: Redactor> Copy for Redacted<T, R> {}
+impl<T: Copy, R: Redactor<T>> Copy for Redacted<T, R> {}
 
-impl<T: PartialEq, R: Redactor> PartialEq for Redacted<T, R> {
+impl<T: PartialEq, R: Redactor<T>> PartialEq for Redacted<T, R> {
     fn eq(&self, other: &Self) -> bool {
         self.inner.eq(&other.inner)
     }
 }
 
-impl<T: PartialEq, R: Redactor> PartialEq<T> for Redacted<T, R> {
+impl<T: PartialEq, R: Redactor<T>> PartialEq<T> for Redacted<T, R> {
     fn eq(&self, other: &T) -> bool {
         self.inner.eq(other)
     }
 }
 
-impl<T: Eq, R: Redactor> Eq for Redacted<T, R> {}
+impl<T: Eq, R: Redactor<T>> Eq for Redacted<T, R> {}
 
-impl<T: PartialOrd, R: Redactor> PartialOrd for Redacted<T, R> {
+impl<T: PartialOrd, R: Redactor<T>> PartialOrd for Redacted<T, R> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.inner.partial_cmp(&other.inner)
     }
 }
 
-impl<T: PartialOrd, R: Redactor> PartialOrd<T> for Redacted<T, R> {
+impl<T: PartialOrd, R: Redactor<T>> PartialOrd<T> for Redacted<T, R> {
     fn partial_cmp(&self, other: &T) -> Option<Ordering> {
         self.inner().partial_cmp(other)
     }
 }
 
-impl<T: Ord, R: Redactor> Ord for Redacted<T, R> {
+impl<T: Ord, R: Redactor<T>> Ord for Redacted<T, R> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.inner.cmp(&other.inner)
     }
 }
 
-impl<T, R: Redactor> Display for Redacted<T, R> {
+impl<T, R: Redactor<T>> Display for Redacted<T, R> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        R::redact(f)
+        R::redact(&self.inner, f)
     }
 }
 
-impl<T, R: Redactor> Debug for Redacted<T, R> {
+impl<T, R: Redactor<T>> Debug for Redacted<T, R> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        R::redact(f)
+        R::redact(&self.inner, f)
     }
 }
 
 /// Requires feature `serde`
 #[cfg(any(feature = "serde", doc))]
-impl<T: Serialize, R: Redactor> Serialize for Redacted<T, R> {
+impl<T: Serialize, R: Redactor<T>> Serialize for Redacted<T, R> {
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -196,7 +196,7 @@ impl<T: Serialize, R: Redactor> Serialize for Redacted<T, R> {
 
 /// Requires feature `serde`
 #[cfg(any(feature = "serde", doc))]
-impl<'de, T: Deserialize<'de>, R: Redactor> Deserialize<'de> for Redacted<T, R> {
+impl<'de, T: Deserialize<'de>, R: Redactor<T>> Deserialize<'de> for Redacted<T, R> {
     fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
     where
         D: Deserializer<'de>,

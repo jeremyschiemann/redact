@@ -11,8 +11,8 @@ use std::fmt::Formatter;
 /// assert_eq!(redacted_value.to_string(), "<redacted>")
 /// ```
 pub struct Simple;
-impl Redactor for Simple {
-    fn redact(f: &mut Formatter) -> std::fmt::Result {
+impl<T> Redactor<T> for Simple {
+    fn redact(_: &T, f: &mut Formatter) -> std::fmt::Result {
         write!(f, "<redacted>")
     }
 }
@@ -35,12 +35,31 @@ impl Redactor for Simple {
 /// assert_eq!(redacted_value.to_string(),"●●●●●●●●");
 /// ```
 pub struct Custom<const SYMBOL: char = '●', const REP: usize = 8>;
-impl<const SYMBOL: char, const REP: usize> Redactor for Custom<SYMBOL, REP> {
-    fn redact(f: &mut Formatter) -> std::fmt::Result {
+impl<T, const SYMBOL: char, const REP: usize> Redactor<T> for Custom<SYMBOL, REP> {
+    fn redact(_: &T, f: &mut Formatter) -> std::fmt::Result {
         write!(
             f,
             "{}",
             std::iter::repeat(SYMBOL).take(REP).collect::<String>()
         )
+    }
+}
+
+/// [Redactor] that shows the redacted size in bytes.
+/// Requires the inner type to impl [AsRef].
+/// ```rust
+/// # use redactrs::Redacted;
+/// # use redactrs::redactors::ByteSize;
+/// let redacted_value: Redacted<_, ByteSize> = "secret".into();
+///
+/// assert_eq!(redacted_value.to_string(), "<6 bytes redacted>");
+/// ```
+pub struct ByteSize;
+impl<T: AsRef<[u8]>> Redactor<T> for ByteSize {
+    fn redact(value: &T, f: &mut Formatter<'_>) -> std::fmt::Result
+    where
+        Self: Sized,
+    {
+        write!(f, "<{} bytes redacted>", value.as_ref().len())
     }
 }

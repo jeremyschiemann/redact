@@ -1,4 +1,4 @@
-use redactrs::redactors::{Custom, Simple};
+use redactrs::redactors::{ByteSize, Custom, Simple};
 use redactrs::Redacted;
 use serde::Serialize;
 
@@ -24,6 +24,12 @@ fn simple() {
 fn custom() {
     let x: Redacted<_, Custom<'☠', 3>> = 42.into();
     assert_eq!(x.to_string(), "☠☠☠")
+}
+
+#[test]
+fn bytesize() {
+    let x: Redacted<_, ByteSize> = "long secret".to_owned().into();
+    assert_eq!(x.to_string(), "<11 bytes redacted>");
 }
 
 #[test]
