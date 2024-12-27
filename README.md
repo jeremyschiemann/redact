@@ -40,3 +40,7 @@ assert_eq!(x.to_string(), "XXXXX");
 To get back the wrapped type, you can either use `.into_inner()` which consumes the `Redacted` and returns the wrapped type
 or use `.inner()`/`.inner_mut()` for a (non mutable) reference of the wrapped type.
 
+
+## Serde support
+
+Serde support can be activated by activating the `serde` feature!
