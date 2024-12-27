@@ -2,6 +2,18 @@ use redactrs::redactors::{Custom, Simple};
 use redactrs::Redacted;
 
 #[test]
+fn display() {
+    let x: Redacted<_, Simple> = 42.into();
+    assert_eq!(format!("{}", x), "<redacted>");
+}
+
+#[test]
+fn debug() {
+    let x: Redacted<_, Simple> = 42.into();
+    assert_eq!(format!("{:?}", x), "<redacted>");
+}
+
+#[test]
 fn simple() {
     let x: Redacted<_, Simple> = 42.into();
     assert_eq!(x.to_string(), "<redacted>");
@@ -43,4 +55,38 @@ fn default() {
     let simple: Redacted<i32, Simple> = Default::default();
     assert_eq!(simple.to_string(), "<redacted>");
     assert_eq!(simple.into_inner(), 0);
+}
+
+#[test]
+fn equals_with_redacted() {
+    let x: Redacted<i32, Simple> = 42.into();
+    let y: Redacted<i32, Simple> = 42.into();
+    assert_eq!(x, y);
+}
+
+#[test]
+fn equals_with_inner() {
+    let x: Redacted<i32, Simple> = 42.into();
+    let y: i32 = 42;
+    assert_eq!(x, y);
+}
+
+#[test]
+fn order_with_redacted() {
+    let x: Redacted<i32, Simple> = 42.into();
+    let y: Redacted<i32, Simple> = 24.into();
+    assert!(x > y);
+    assert!(x >= y);
+    assert!(!(x < y));
+    assert!(!(x <= y));
+}
+
+#[test]
+fn order_with_inner() {
+    let x: Redacted<i32, Simple> = 42.into();
+    let y: i32 = 24;
+    assert!(x > y);
+    assert!(x >= y);
+    assert!(!(x < y));
+    assert!(!(x <= y));
 }

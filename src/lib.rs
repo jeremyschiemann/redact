@@ -31,7 +31,8 @@
 pub mod redactors;
 
 use crate::redactors::Simple;
-use std::fmt::{Display, Formatter, Result};
+use std::cmp::Ordering;
+use std::fmt::{Debug, Display, Formatter, Result};
 use std::marker::PhantomData;
 
 #[cfg(doc)]
@@ -130,7 +131,39 @@ impl<T: Clone, R: Redactor> Clone for Redacted<T, R> {
 
 impl<T: Copy, R: Redactor> Copy for Redacted<T, R> {}
 
+impl<T: PartialEq, R: Redactor> PartialEq for Redacted<T, R> {
+    fn eq(&self, other: &Self) -> bool {
+        self.inner.eq(&other.inner)
+    }
+}
+
+impl<T: PartialEq, R: Redactor> PartialEq<T> for Redacted<T, R> {
+    fn eq(&self, other: &T) -> bool {
+        self.inner.eq(other)
+    }
+}
+
+impl<T: Eq, R: Redactor> Eq for Redacted<T, R> {}
+
+impl<T: PartialOrd, R: Redactor> PartialOrd for Redacted<T, R> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.inner.partial_cmp(&other.inner)
+    }
+}
+
+impl<T: PartialOrd, R: Redactor> PartialOrd<T> for Redacted<T, R> {
+    fn partial_cmp(&self, other: &T) -> Option<Ordering> {
+        self.inner().partial_cmp(other)
+    }
+}
+
 impl<T, R: Redactor> Display for Redacted<T, R> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        R::redact(f)
+    }
+}
+
+impl<T, R: Redactor> Debug for Redacted<T, R> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         R::redact(f)
     }
