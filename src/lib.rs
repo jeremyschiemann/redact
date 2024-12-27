@@ -157,6 +157,12 @@ impl<T: PartialOrd, R: Redactor> PartialOrd<T> for Redacted<T, R> {
     }
 }
 
+impl<T: Ord, R: Redactor> Ord for Redacted<T, R> {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.inner.cmp(&other.inner)
+    }
+}
+
 impl<T, R: Redactor> Display for Redacted<T, R> {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         R::redact(f)
