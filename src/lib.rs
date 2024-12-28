@@ -49,9 +49,7 @@ use std::marker::PhantomData;
 /// A Trait to define how a value should be redacted.
 pub trait Redactor {
     ///Function called by [Display] and [Debug].
-    fn redact(f: &mut Formatter<'_>) -> Result
-    where
-        Self: Sized;
+    fn redact(f: &mut Formatter<'_>) -> Result;
 }
 
 /// Struct used to wrap sensitive content that should not be printed/logged.
