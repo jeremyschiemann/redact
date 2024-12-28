@@ -21,9 +21,8 @@ How the data is redacted is defined by the `Redactor`. A `Redactor` is a struct 
 ## Usage
 
 First add this crate to your project:
-```
-cargo add redactrs
-```
+
+`cargo add redactrs`
 
 
 In its most basic form, `Redacted` is used like this:
@@ -53,3 +52,5 @@ or use `.inner()`/`.inner_mut()` for a (non mutable) reference of the wrapped ty
 ## Serde support
 
 Serde support can be activated by activating the `serde` feature!
+
+`cargo add redactrs -F serde`
