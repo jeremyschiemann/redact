@@ -76,7 +76,7 @@ jobs:
     # we use a matrix here just because env can't be used in job names
     strategy:
       matrix:
-        msrv: ["1.63.0"]
+        msrv: ["1.60.0"]
     name: ubuntu / ${{ matrix.msrv }}
     steps:
       - uses: actions/checkout@v4

@@ -1,7 +1,16 @@
-[![Crates.io](https://img.shields.io/crates/v/redactrs)](https://crates.io/crates/redactrs)
-[![Documentation](https://img.shields.io/docsrs/redactrs)](https://docs.rs/redactrs/)
+# Redactrs &emsp;  [![Latest Version]][crates.io] ![Total Downloads] [![MSRV]][Rust 1.63.0] ![License] [![Build Status]][actions] [![Documentation]][docs.rs]
 
-# Redactrs
+[crates.io]: https://crates.io/crates/redactrs
+[Latest Version]: https://img.shields.io/crates/v/redactrs 
+[Total Downloads]: https://img.shields.io/crates/d/redactrs
+[MSRV]: https://img.shields.io/crates/msrv/redactrs
+[Rust 1.63.0]: https://blog.rust-lang.org/2022/08/11/Rust-1.63.0.html
+[Build Status]: https://img.shields.io/github/actions/workflow/status/jeremyschiemann/redactrs/tests.yaml?branch=main
+[actions]: https://github.com/jeremyschiemann/redactrs/actions?query=branch%3Amain
+[Documentation]: https://img.shields.io/docsrs/redactrs
+[docs.rs]: (https://docs.rs/redactrs/
+[License]: https://img.shields.io/crates/l/redactrs
+
 
 ## What is it?
 Redactrs is a wrapper for sensitive data that you want to avoid being leaked by accidentally printing/logging/etc. them.

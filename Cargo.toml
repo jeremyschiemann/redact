@@ -6,7 +6,7 @@ description = "Wrapper to avoid accidentally leaking sensitive data during print
 repository = "https://github.com/jeremyschiemann/redactrs.git"
 readme = "README.md"
 license = "MIT"
-rust-version = "1.63.0"
+rust-version = "1.60.0"
 documentation = "https://docs.rs/redactrs"
 
 keywords = ["redacted", "mute", "hide", "logging", "sensitive-data"]
