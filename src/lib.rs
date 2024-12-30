@@ -65,7 +65,6 @@ use crate::redactors::Simple;
 #[cfg(doc)]
 use crate::redactors::*;
 
-
 use std::cmp::Ordering;
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::marker::PhantomData;
@@ -137,7 +136,6 @@ where
         &mut self.inner
     }
 }
-
 
 impl<T, R> Default for Redacted<T, R>
 where
@@ -258,4 +256,3 @@ where
         R::redact(f)
     }
 }
-

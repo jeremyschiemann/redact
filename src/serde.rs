@@ -2,9 +2,8 @@
 //!
 //! Requires feature `serde`.
 
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use crate::{Redacted, Redactor};
-
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 /// Requires feature `serde`.
 impl<T, R> Serialize for Redacted<T, R>
@@ -20,7 +19,6 @@ where
     }
 }
 
-
 /// Requires feature `serde`.
 impl<'de, T, R> Deserialize<'de> for Redacted<T, R>
 where
@@ -35,7 +33,6 @@ where
         Ok(value.into())
     }
 }
-
 
 /// Use this function if you want serde to serialize without redaction.
 ///
