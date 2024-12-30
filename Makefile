@@ -12,3 +12,7 @@ clippy:
 
 check:
 	cargo check --all-features
+
+test-min:
+	cargo +nightly update -Zminimal-versions
+	cargo +nightly test --locked --all-features --all-targets
