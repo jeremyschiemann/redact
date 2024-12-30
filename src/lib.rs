@@ -53,8 +53,8 @@
 //! ```
 //!
 //! # Feature flags
-//! - `serde`: Enables serde support.
-//! - `zeroize`: Enables zeroize support.
+//! - `serde`: Enables [serde](https://crates.io/crates/serde) support.
+//! - `zeroize`: Enables [zeroize](https://crates.io/crates/zeroize) support.
 //!
 
 pub mod redactors;
