@@ -30,18 +30,42 @@
 //! NOTE: a [Redacted] is always constructed via the [From]/[Into] trait.
 //!
 //!
+//! # Serde support
+//!
+//! By default [Redacted] types will serialize into their redacted representation.
+//! If you don't want this, and rather serialize normally
+//! you can annotate the redacted field with this attribute: `#[serde(serialize_with = "no_redact")]`
+//!
+//! ```rust
+//! use redactrs::Redacted;
+//! use serde::Serialize;
+//! use redactrs::serde::no_redact;
+//! #[derive(Serialize)]
+//! struct MyData {
+//!     #[serde(serialize_with = "no_redact" )]
+//!     a: Redacted<i32>,
+//! }
+//! let data = MyData {
+//!     a: 42.into(),
+//! };
+//! let json = serde_json::to_string(&data).expect("Test case");
+//! assert_eq!(json, r#"{"a":42}"#);
+//! ```
+//!
 //! # Feature flags
-//! - `serde`: Enables serde support. Be aware: [Redacted] types will serialize into their redacted representation!
+//! - `serde`: Enables serde support.
 //!
 
 pub mod redactors;
+
+#[cfg(any(feature = "serde", doc))]
+pub mod serde;
 
 use crate::redactors::Simple;
 #[cfg(doc)]
 use crate::redactors::*;
 
-#[cfg(any(feature = "serde", doc))]
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
 use std::cmp::Ordering;
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::marker::PhantomData;
@@ -113,6 +137,7 @@ where
         &mut self.inner
     }
 }
+
 
 impl<T, R> Default for Redacted<T, R>
 where
@@ -234,33 +259,3 @@ where
     }
 }
 
-/// Requires feature `serde`
-#[cfg(any(feature = "serde", doc))]
-impl<T, R> Serialize for Redacted<T, R>
-where
-    T: Serialize,
-    R: Redactor,
-{
-    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        serializer.serialize_str(&self.to_string())
-    }
-}
-
-/// Requires feature `serde`
-#[cfg(any(feature = "serde", doc))]
-impl<'de, T, R> Deserialize<'de> for Redacted<T, R>
-where
-    T: Deserialize<'de>,
-    R: Redactor,
-{
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let value: T = Deserialize::deserialize(deserializer)?;
-        Ok(value.into())
-    }
-}

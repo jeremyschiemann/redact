@@ -111,6 +111,30 @@ fn serialize() {
     assert_eq!(json, r#"{"a":"<redacted>","b":24}"#);
 }
 
+
+#[test]
+fn serialize_no_redact() {
+    use serde::Serialize;
+    use redactrs::serde::no_redact;
+    #[derive(Serialize)]
+    struct MyData {
+        #[serde(serialize_with = "no_redact" )]
+        a: Redacted<i32>,
+        b: i32,
+    }
+
+    let data = MyData {
+        a: 42.into(),
+        b: 24,
+    };
+
+    let json = serde_json::to_string(&data).expect("Test case");
+
+    assert_eq!(json, r#"{"a":42,"b":24}"#);
+}
+
+
+
 #[test]
 fn deserialize() {
     use serde::Deserialize;
