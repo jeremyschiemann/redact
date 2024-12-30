@@ -17,9 +17,11 @@ exclude = [".github/*", "Makefile"]
 [features]
 default = []
 serde = ["dep:serde"]
+zeroize = ["dep:zeroize"]
 
 [dependencies]
 serde =  { optional = true, version = "1.0.0" }
+zeroize = { optional = true, version = "1.6.0" }
 
 [dev-dependencies]
 serde = { version = "1.0.217", features = ["derive"] }

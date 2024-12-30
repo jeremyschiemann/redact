@@ -54,12 +54,16 @@
 //!
 //! # Feature flags
 //! - `serde`: Enables serde support.
+//! - `zeroize`: Enables zeroize support.
 //!
 
 pub mod redactors;
 
 #[cfg(any(feature = "serde", doc))]
 pub mod serde;
+
+#[cfg(any(feature = "zeroize", doc))]
+pub mod zeroize;
 
 use crate::redactors::Simple;
 #[cfg(doc)]
