@@ -1,6 +1,7 @@
 use redactrs::redactors::{Custom, Simple};
 use redactrs::Redacted;
 use serde::Serialize;
+use zeroize::Zeroize;
 
 #[test]
 fn display() {
@@ -146,4 +147,12 @@ fn deserialize() {
     assert_eq!(data.a, 42);
     assert_eq!(data.b, 24);
     assert_eq!(data.a.to_string(), "<redacted>");
+}
+
+#[test]
+fn zeroize() {
+    let mut x: Redacted<i32> = 42.into();
+    x.zeroize();
+
+    assert_eq!(*x.inner(), 0);
 }
