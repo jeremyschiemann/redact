@@ -46,7 +46,7 @@ assert_eq!(x.to_string(), "XXXXX");
 ```
 
 To get back the wrapped type, you can either use `.into_inner()` which consumes the `Redacted` and returns the wrapped type
-or use `.inner()`/`.inner_mut()` for a (non mutable) reference of the wrapped type.
+or use `.inner()`/`.inner_mut()` for a (mutable) reference of the wrapped type.
 
 
 ## Serde support
@@ -54,3 +54,25 @@ or use `.inner()`/`.inner_mut()` for a (non mutable) reference of the wrapped ty
 Serde support can be activated by activating the `serde` feature!
 
 `cargo add redactrs -F serde`
+
+
+By default, Redacted types will serialize into their redacted representation. If you don’t want this, and rather serialize normally you can annotate the redacted field with this attribute: `#[serde(serialize_with = "no_redact")]`
+
+```rust
+use redactrs::Redacted;
+use serde::Serialize;
+use redactrs::serde::no_redact;
+
+#[derive(Serialize)]
+struct MyData {
+    #[serde(serialize_with = "no_redact" )]
+    a: Redacted<i32>,
+}
+
+let data = MyData {
+    a: 42.into(),
+};
+
+let json = serde_json::to_string(&data).expect("Test case");
+assert_eq!(json, r#"{"a":42}"#);
+```
